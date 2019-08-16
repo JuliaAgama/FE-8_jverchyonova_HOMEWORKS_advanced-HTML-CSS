@@ -1,18 +1,34 @@
-/* Advanced JS. Prototypes. HomeWork_02. Hamburger (ES-6)*/
+/* Advanced JS. Prototypes. HomeWork_02. Hamburger (ES6)*/
 ;
+    //  data base simulation:
+    const sizes = [
+        {value: 'small', price: 50, calories: 20},
+        {value: 'large', price: 100, calories: 40}
+    ];
+    const stuffings = [
+        {value: 'cheese', price: 10, calories: 20},
+        {value: 'salad', price: 20, calories: 5},
+        {value: 'potato', price: 15, calories: 10}
+    ];
+    const toppings = [
+        {value: 'spices', price: 15, calories: 0},
+        {value: 'mayonese', price: 20, calories: 5}
+    ];
+
 /*******************************************************************/
-
 {
-
-    /*******************************************************************
-       * Класс, объекты которого описывают параметры гамбургера.
-       * @constructor
-       * @param size        Размер
-       * @param stuffing    Начинка
-       * @throws {HamburgerException}  При неправильном использовании
-       */
+    /* Класс, объекты которого описывают параметры гамбургера. */
 
     class Hamburger {
+
+        /* Размеры, виды начинок и добавок */
+        static SIZE_SMALL = 'small';
+        static SIZE_LARGE = 'large';
+        static STUFFING_CHEESE = 'cheese';
+        static STUFFING_SALAD = 'salad';
+        static STUFFING_POTATO = 'potato';
+        static TOPPING_MAYO = 'mayonese';
+        static TOPPING_SPICE = 'spices';
 
         constructor (size, stuffing) {
             this.size = size;
@@ -20,37 +36,8 @@
             this._toppings = [];
         }
 
-        get size () {
-            return this._size;
-        }
-        set size (value) {
-            if (!value) {
-                throw new HamburgerException (`NO SIZE CHOSEN! You must enter size of hamburger!!!!`);
-            } else if (!validateInput(size)) {
-                throw new HamburgerException (`INVALID SIZE "${size}"! Choose correct size!!!!`)
-            } else {
-                this._size = value;
-            }
-        }
-
-        get stuffing {
-            
-        }
-
-
-        // validation of input:
-        if (!stuffing) {
-            throw new HamburgerException (`You must choose both SIZE and STUFFING!!!!`)
-        };
-        if(!validateInput(size)) {
-            throw new HamburgerException (`INVALID SIZE "${size}"! Choose correct size!!!!`)
-        };
-
-        if(!validateInput(stuffing)) {
-            throw new HamburgerException (`INVALID STUFFING "${stuffing}"! Choose correct stuffing!!!!`)
-        };
-        
-        function validateInput (el) {
+        // функция проверки правильности ввода:
+        validateInput (el) {
             for (let key in Hamburger) {
                 if(el == Hamburger[key]) {
                     return true;
@@ -59,202 +46,163 @@
             return false;
         };
 
-        
-
-        // console.log(`You have created new Hamburger: ${this.size}, ${this.stuffing}. Price: ${sizes[this.size].price+stuffings[this.stuffing].price} uah (${sizes[this.size].calories+stuffings[this.stuffing].calories} calories).`)
-    };
-
-    
-    /* Размеры, виды начинок и добавок */
-
-    Hamburger.SIZE_SMALL = 'size_small';
-    Hamburger.SIZE_LARGE = 'size_large';
-    Hamburger.STUFFING_CHEESE = 'stuffing_cheese';
-    Hamburger.STUFFING_SALAD = 'stuffing_salad';
-    Hamburger.STUFFING_POTATO = 'stuffing_potato';
-    Hamburger.TOPPING_MAYO = 'topping_mayo';
-    Hamburger.TOPPING_SPICE = 'topping_spice';
-
-
-    //  data base simulation:
-    const sizes = {};
-    const stuffings = {};
-    const toppings = {};
-
-    sizes[Hamburger.SIZE_SMALL] = {price: 50, calories: 20};
-    sizes[Hamburger.SIZE_LARGE] = {price: 100, calories: 40};
-
-    stuffings[Hamburger.STUFFING_CHEESE] = {price: 10, calories: 20};
-    stuffings[Hamburger.STUFFING_SALAD] = {price: 20, calories: 5};
-    stuffings[Hamburger.STUFFING_POTATO] = {price: 15, calories: 10};
-
-    toppings[Hamburger.TOPPING_SPICE] = {price: 15, calories: 0};
-    toppings[Hamburger.TOPPING_MAYO] = {price: 20, calories: 5};
-
-
-
-
-    /*******************************************************************
-     * Добавить добавку к гамбургеру. Можно добавить несколько добавок,
-     * при условии, что они разные.
-     *
-     * @param topping     Тип добавки
-     * @throws {HamburgerException}  При неправильном использовании
-     */
-
-    Hamburger.prototype.addTopping = function (topping) {
-        if (this._toppings.some(function(el) {return el==topping;})) {
-            throw new HamburgerException(`DUPLICATE TOPPING. You are trying to add: "${topping}". But you have already added it`);
-        } else {
-            this._toppings.push(topping);
+        /* Узнать размер гамбургера */
+        get size () {
+            return this._size;
         }
-        console.log(`you have added "${topping}". Calories: ${toppings[topping].calories}. Price: ${toppings[topping].price}`);
-    }
-
-
-    /*******************************************************************
-     * Убрать добавку, при условии, что она ранее была добавлена.
-     *
-     * @param topping   Тип добавки
-     * @throws {HamburgerException}  При неправильном использовании
-     */
-
-    Hamburger.prototype.removeTopping = function (topping) {
-        if (this._toppings.some(function(el) {return el==topping;})) {
-            this._toppings = this._toppings.filter(function(el) {return el!==topping});
-        } else {
-            throw new HamburgerException(`TOPPING IS NOT FOUND. You didn't add the "${topping}". So, you cannot remove it`);
+        set size (value) {
+            if (!value) {
+                throw new HamburgerException (`NO SIZE CHOSEN! You must enter size of hamburger!!!!`);
+            } else if (!this.validateInput(value)) {
+                throw new HamburgerException (`INVALID SIZE "${value}"! Choose correct size!!!!`)
+            } else {
+                this._size = value;
+            }
         }
-        console.log(`you have removed "${topping}"`);
+
+    /* Узнать начинку гамбургера */
+        get stuffing () {
+            return this._stuffing;
+        }
+        set stuffing (value) {
+            if (!value) {
+                throw new HamburgerException (`NO SIZE CHOSEN! You must enter stuffing of hamburger!!!!`);
+            } else if (!this.validateInput(value)) {
+                throw new HamburgerException (`INVALID STUFFING "${value}"! Choose correct stuffing!!!!`)
+            } else {
+                this._stuffing = value;
+            }
+        }
+
+        /* Получить список добавок. */
+        get toppings () {
+            return this._toppings;
+        }
+
+        /* Добавить добавку к гамбургеру. Можно несколько, если разные */
+        addTopping (t) {
+            if (this.toppings.some(el => el==t)) {
+                throw new HamburgerException(`DUPLICATE TOPPING. You are trying to add: "${t}". But you have already added it`);
+            } else if (!this.validateInput(t)) {
+                throw new HamburgerException (`INVALID TOPPING "${t}"! Choose correct TOPPING!!!!`);
+            } else {
+                this.toppings.push(t);
+            }
+            console.log(`you have added "${t}".`);
+        }
+
+        /* Убрать добавку, если она ранее была добавлена */
+        removeTopping (t) {
+            if (this._toppings.some(el => el==t)) {
+                this._toppings = this._toppings.filter(el => el!==t);
+            } else {
+                throw new HamburgerException(`TOPPING IS NOT FOUND. You didn't add the "${t}". So, you cannot remove it`);
+            }
+            console.log(`you have removed "${t}"`);
+        }
+
+        /* Узнать цену гамбургера */
+        calculatePrice () {
+            let price = sizes.find(el => el.value == this._size).price+stuffings.find(el => el.value == this._stuffing).price;
+            if(this._toppings[0]) {
+                this._toppings.forEach(function(i) {
+                        price += toppings.find(el => el.value == i).price;
+                });
+            };
+            return price;
+        }
+
+        /* Узнать калорийность */
+        calculateCalories () {
+            let calories = sizes.find(el => el.value == this._size).calories+stuffings.find(el => el.value == this._stuffing).calories;
+            if(this._toppings[0]) {
+                this._toppings.forEach(function(i) {
+                        calories += toppings.find(el => el.value == i).calories;
+                });
+            };
+            return calories;
+        }
     }
 
+    /* Представляет информацию об ошибке в ходе работы с гамбургером. */
+    class HamburgerException {
+        constructor (message) {
+            this.name = 'NO!!! ';
+            this.message = message;
+        }
 
-    /*******************************************************************
-       * Получить список добавок.
-       * @return {Array} Массив добавленных добавок, содержит константы
-       *                 Hamburger.TOPPING_*
-       */
-
-    Hamburger.prototype.getToppings = function () {
-        return this._toppings;
+        get message() {
+            return this._message;
+        }
+        set message(value) {
+            this._message = value;
+        }
     }
 
-
-    /*******************************************************************
-     * Узнать размер гамбургера */
-
-    Hamburger.prototype.getSize = function () {
-        return this.size;
-    }
-
-
-    /*******************************************************************
-       * Узнать начинку гамбургера */
-    Hamburger.prototype.getStuffing = function () {
-        return this.stuffing;
-    }
-
-
-    /*******************************************************************
-       * Узнать цену гамбургера
-       * @return {Number} Цена в тугриках
-       */
-
-    Hamburger.prototype.calculatePrice = function () {
-        let price = sizes[this.size].price + stuffings[this.stuffing].price;
-        if(this._toppings[0]) {
-            this._toppings.forEach(function(el) {
-                    price += toppings[el].price;
-            });
-        };
-        return price;
-    }
-
-
-    /*******************************************************************
-     * Узнать калорийность
-     * @return {Number} Калорийность в калориях
-     */
-    Hamburger.prototype.calculateCalories = function () {
-        let calories = sizes[this.size].calories + stuffings[this.stuffing].calories;
-        if(this._toppings[0]) {
-            this._toppings.forEach(function(el) {
-                    calories += toppings[el].calories;
-            });
-        };
-        return calories;
-    }
-
-
-    /*******************************************************************
-     * Представляет информацию об ошибке в ходе работы с гамбургером.
-       * Подробности хранятся в свойстве message.
-       * @constructor
-       */
-    function HamburgerException (message) {
-        this.name = 'NO!!! ';
-        this.message = message;
-    }
-
-
-    /*******************************************************************
-    /** Let's check the result: */
+    /* Let's check the result: */
     try {
         // маленький гамбургер с начинкой из сыра, узнаем цену и калории
-        let myHam = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
-        console.log(`Total calories: ${myHam.calculateCalories()}.`)
+        let myHam = new Hamburger('small', 'cheese');
+        console.log(`You have created new Hamburger! size: ${myHam.size}, stuffing: ${myHam.stuffing}. Price: ${myHam.calculatePrice()} uah. (${myHam.calculateCalories()} calories)`);
         console.log(`Total price: ${myHam.calculatePrice()}.`)
+        console.log(`Total calories: ${myHam.calculateCalories()}.`)
         console.log('----------------------------');
-        
+
         // добавка из майонеза, узнаем цену и калории
-        myHam.addTopping(Hamburger.TOPPING_MAYO);
-        console.log(`Total calories: ${myHam.calculateCalories()}.`)
+        myHam.addTopping('mayonese');
+        console.log(`(myHam) has ${myHam.toppings.length} toppings: ${myHam.toppings.join(', ')}`);
         console.log(`Total price: ${myHam.calculatePrice()}.`)
+        console.log(`Total calories: ${myHam.calculateCalories()}.`)
         console.log('----------------------------');
-        
+
         // добавка из специй, узнаем цену и калории
-        myHam.addTopping(Hamburger.TOPPING_SPICE);
-        console.log(`Total calories: ${myHam.calculateCalories()}.`)
+        myHam.addTopping('spices');
         console.log(`Total price: ${myHam.calculatePrice()}.`)
+        console.log(`Total calories: ${myHam.calculateCalories()}.`)
         console.log('----------------------------');
-        
-        // узнаем, большой ли гамбургер
-        console.log(`Is (myHam) large? ${myHam.getSize() === Hamburger.SIZE_LARGE}.`);
-        // узнаем, с какой начинкой гамбургер
-        console.log(`What stuffing is in (myHam)? ${myHam.getStuffing()}.`);
+
         // узнаем, с какими добавками гамбургер
-        console.log(`(myHam) has ${myHam.getToppings().length} toppings.`);
+        console.log(`(myHam) has ${myHam.toppings.length} toppings: ${myHam.toppings.join(', ')}`);
+
+        // узнаем, большой ли гамбургер
+        console.log(`Is (myHam) large? ${myHam.size === 'large'}.`);
+
+        // узнаем, с какой начинкой гамбургер
+        console.log(`What stuffing is in (myHam)? ${myHam.stuffing}.`);
         console.log('----------------------------');
-        
+
         // Еще один гамбургер: большой с начинкой из салата, узнаем цену и калории
-        let yourHam = new Hamburger(Hamburger.SIZE_LARGE, Hamburger.STUFFING_SALAD);
-        console.log(`Total calories: ${yourHam.calculateCalories()}.`)
+        let yourHam = new Hamburger('large', 'salad');
+        console.log(`You have created new Hamburger! size: ${yourHam.size}, stuffing: ${yourHam.stuffing}.`);
         console.log(`Total price: ${yourHam.calculatePrice()}.`)
+        console.log(`Total calories: ${yourHam.calculateCalories()}.`)
         console.log('----------------------------');
-        
+
         // добавка из специй, узнаем цену и калории
-        yourHam.addTopping(Hamburger.TOPPING_SPICE);
-        console.log(`Total calories: ${yourHam.calculateCalories()}.`)
+        yourHam.addTopping('spices');
+        console.log(`(yourHam) has ${yourHam.toppings.length} toppings: ${yourHam.toppings.join(', ')}`);
         console.log(`Total price: ${yourHam.calculatePrice()}.`)
+        console.log(`Total calories: ${yourHam.calculateCalories()}.`)
         console.log('----------------------------');
-        
+
         // передумали, убираем добавку из специй, обновляем цену и калории
-        yourHam.removeTopping(Hamburger.TOPPING_SPICE);
-        console.log(`Total calories: ${yourHam.calculateCalories()}.`)
+        yourHam.removeTopping('spices');
+        console.log(`(yourHam) has ${yourHam.toppings.length} toppings: ${yourHam.toppings.join(', ')}`);
         console.log(`Total price: ${yourHam.calculatePrice()}.`)
+        console.log(`Total calories: ${yourHam.calculateCalories()}.`)
         console.log('----------------------------');
 
 
-/** Examples of EXCEPTIONS: */
-        // myHam.addTopping(Hamburger.TOPPING_SPICE); //NO!!!  DUPLICATE TOPPING...
-        // yourHam.removeTopping(Hamburger.TOPPING_SPICE); //NO!!! TOPPING IS NOT FOUND
+// /** Examples of EXCEPTIONS: */
         // let emptyHam = new Hamburger(); //NO!!!  You must choose both SIZE and STUFFING!!!!
-        // let wrongHam = new Hamburger('hi', Hamburger.STUFFING_SALAD); //NO!!!  INVALID SIZE...
+        // let wrongSize = new Hamburger('hi', 'salad'); //NO!!!  INVALID SIZE...
+        // let wrongStuffing = new Hamburger('small', 'hi'); //NO!!!  INVALID SIZE...
+        // myHam.addTopping('spices'); //NO!!!  DUPLICATE TOPPING...
+        // myHam.addTopping('hi'); //NO!!!  INVALID TOPPING...
+        // yourHam.removeTopping('spices'); //NO!!! TOPPING IS NOT FOUND
 
     } catch (e) {
         console.error(e.name, e.message);
     };
 
-
 }
-
