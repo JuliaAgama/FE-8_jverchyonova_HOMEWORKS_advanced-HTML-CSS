@@ -146,7 +146,10 @@
         };
         return price;
     }
-
+    // Если в this._toppings записывать не только идентификаторы, а полностью объекты с данными, то:
+    // Hamburger.prototype.calculatePrice = function () {
+    //     return sizes[this.size].price + stuffings[this.stuffing].price + (this._toppings[0] ? this._toppings.reduce((sum, current) => sum + current) : 0)
+    // }
 
     /*******************************************************************
      * Узнать калорийность
@@ -156,6 +159,7 @@
         let calories = sizes[this.size].calories + stuffings[this.stuffing].calories;
         if(this._toppings[0]) {
             this._toppings.forEach(function(el) {
+                console.log(toppings[el]);
                     calories += toppings[el].calories;
             });
         };
