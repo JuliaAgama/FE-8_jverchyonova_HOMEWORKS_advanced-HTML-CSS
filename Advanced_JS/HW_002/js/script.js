@@ -37,14 +37,19 @@
         }
 
         // функция проверки правильности ввода:
+        // validateInput (el) {
+        //     for (let key in Hamburger) {
+        //         if(el == Hamburger[key]) {
+        //             return true;
+        //         }
+        //     }
+        //     return false;
+        // };
+
+        // Совет Сарибега. Можно попробовать написать примерно в таком стиле:
         validateInput (el) {
-            for (let key in Hamburger) {
-                if(el == Hamburger[key]) {
-                    return true;
-                }
-            }
-            return false;
-        };
+            return Object.values(Hamburger).includes(el);
+          };
 
         /* Узнать размер гамбургера */
         get size () {
